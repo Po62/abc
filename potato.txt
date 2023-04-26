@@ -1,0 +1,750 @@
+			Msa Pract1
+Q. create console based asp.net core appli.
+
+C:\Users\DELL>dotnet
+
+Usage: dotnet [options]
+Usage: dotnet [path-to-application]
+
+C:\Users\DELL>dotnet --version
+7.0.203
+
+C:\Users\DELL>cd..
+
+C:\Users>cd..
+
+E:\>d:
+
+D:\MSAPRACT>md HelloWorld
+
+D:\MSAPRACT>cd Hell*
+
+D:\MSAPRACT\HelloWorld>dotnet new console
+
+Restoring D:\MSAPRACT\HelloWorld\HelloWorld.csproj:
+  Determining projects to restore...
+  Restored D:\MSAPRACT\HelloWorld\HelloWorld.csproj (in 748 ms).
+Restore succeeded.
+
+D:\MSAPRACT\HelloWorld>cd Hell*
+The directory name is invalid.
+
+D:\MSAPRACT\HelloWorld>cd hell*
+The directory name is invalid.
+
+D:\MSAPRACT\HelloWorld>dotnet restore
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+
+D:\MSAPRACT\HelloWorld>dotnet run
+Hello, World!
+
+• Now open HelloWorld.csproj file, edit the code
+
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup>
+<OutputType>Exe</OutputType>
+<TargetFramework>net6.0</TargetFramework>
+<ImplicitUsings>enable</ImplicitUsings>
+<Nullable>enable</Nullable>
+</PropertyGroup>
+<ItemGroup>
+<PackageReference Include="Microsoft.AspNetCore.Mvc"
+Version="1.1.1"/>
+<PackageReference Include="Microsoft.AspNetCore.Server.Kestrel"
+Version="1.1.1"/>
+<PackageReference Include="Microsoft.Extensions.Logging"
+Version="1.1.1"/>
+<PackageReference Include="Microsoft.Extensions.Logging.Console"
+Version="1.1.1"/>
+<PackageReference Include="Microsoft.Extensions.Logging.Debug"
+Version="1.1.1"/>
+<PackageReference
+Include="Microsoft.Extensions.Configuration.CommandLine"
+Version="1.1.1"/>
+</ItemGroup>
+</Project>
+
+• Open Program.cs file and edit the code
+using System;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+namespace HelloWorld // Note: actual namespace depends on the
+project name.
+{
+internal class Program
+ {
+ static void Main(string[] args)
+{
+var config = new ConfigurationBuilder()
+ .AddCommandLine(args)
+ .Build();
+var host = new WebHostBuilder()
+.UseKestrel()
+.UseStartup<Startup>()
+.UseConfiguration(config)
+.Build();
+host.Run();
+}
+ }
+public class Startup
+{
+public Startup(IHostingEnvironment env) { }
+public void Configure(IApplicationBuilder app, IHostingEnvironment
+env, ILoggerFactory loggerFactory)
+{
+app.Run(async (context) => { await
+context.Response.WriteAsync("Hello, world!");});
+}
+}
+}
+
+D:\MSAPRACT\HelloWorld>dotnet restore
+
+>dotnet run
+Now open the browser open the url: http://localhost:5000
+
+			Practical 2
+
+
+Q2. Create a MVC Project in ASP.net core
+
+Step 1 :
+Create a mvc project
+dotnet new mvc –auth none
+
+Step 2 :
+Restore, build and run the program.
+Use the first url of the command prompt in the browser and see theoutput
+
+
+D:\MSAPRACT\PRACT2>dotnet new mvc --auth none
+
+The template "ASP.NET Core Web App (Model-View-Controller)" was created successfully.
+This template contains technologies from parties other than Microsoft, see https://aka.ms/aspnetcore/7.0-third-party-notices for details.
+
+Processing post-creation actions...
+Restoring D:\MSAPRACT\PRACT2\PRACT2.csproj:
+  Determining projects to restore...
+  Restored D:\MSAPRACT\PRACT2\PRACT2.csproj (in 513 ms).
+Restore succeeded.
+
+
+
+D:\MSAPRACT\PRACT2>dotnet build
+
+MSBuild version 17.5.1+f6fdcf537 for .NET
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  PRACT2 -> D:\MSAPRACT\PRACT2\bin\Debug\net7.0\PRACT2.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:39.95
+
+D:\MSAPRACT\PRACT2>dotnet run
+Building...
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:5123
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: D:\MSAPRACT\PRACT2
+
+Step 3 :
+Go to Models Folder and create StockQuote.cs file in it.
+using System;
+namespace pracs.Models
+{
+public class StockQuote
+{
+public string Symbol {get;set;}
+public int Price{get;set;}
+}
+}
+Step 4 :
+Now go to views folder and then in home folder. Edit the index.cshtml file
+@{
+ ViewData["Title"] = "Home Page";
+}
+<div class="text-center">
+ <h1 class="display-4">Welcome</h1>
+ Symbol: @Model.Symbol <br/>
+Price: $@Model.Price <br/>
+</div>
+
+Step 5 :
+Now go to controller folder and edit HomeController.cs
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using pracs2.Models;
+namespace pracs2.Controllers;
+public class HomeController : Controller
+{
+ public async Task <IActionResult> Index()
+{
+var model= new StockQuote{ Symbol="Nike", Price=3200};
+return View(model);
+}
+}
+
+step 6:
+D:\MSAPRACT\PRACT2>dotnet build
+D:\MSAPRACT\PRACT2>dotnet run
+
+step 7:
+Open the first url in the browser and see the output
+http://localhost:7243
+
+			Practical 3
+Q3. Usage of Docker Desktop
+
+Commands & its output :
+Open command prompt
+• To check whether docker is installed properly
+$ docker
+
+D:\MSA>docker
+
+• To see the version of the docker
+$ docker -v
+
+D:\MSA>docker -v
+
+• To run hello-world image
+command - $ docker run -p 8080:8080 dotnetcoreservices/hello-world
+
+• Run localhost in the browser
+http://localhost:8080
+
+• To see the output in the command prompt
+$ curl http://localhost:8080/will/it/blend?
+
+• To see the images in the docker
+$ docker ps
+
+• To terminate the image in the docker.
+note the container id of the docker that you want to terminal and
+replace the <Containerid> in the below command
+$ docker kill <containerid>
+
+D:\MSA>docker kill 35c840e18b74
+
+To check whether the docker is terminated or not
+$ docker ps
+
+			Practical No 4
+Aim : Working with Docker
+Commands and its output :
+Step 1:
+• Create a account in the docker hub. Remember the username and password of the
+account
+ Step 2 :
+• Now to go https://labs.play-with-docker.com/ and click on Start button.
+• Click on Add New Instance. You will see the editor open in the right pane. Give the
+commands in the editor
+ Step 3 :
+• To check the version of the docker
+$ docker – version
+
+• To pull the readymade image
+$ docker pull hello-world 
+
+• To check the images in docker
+$ docker images
+
+Part 1: To pull and Push images in docker
+ Step 4 :
+• Open the new tab in the browser and login to hub.docker.com
+• Click on Repositories and then click on Create Repositories
+• Give the name of the repository as “repo1” and in description add “My first repository”
+• Make visibility as Private
+• And now click on Create button and check whether the repository is created or not.
+ Step 5 :
+• Now come to the https://labs.play-with-docker.com/ and give the following command
+• Login into docker account
+$ docker login -username= your_user_name
+password:
+
+• To tag an image in docker
+$ docker tag <image id> <username>/repo1: firsttry
+• To push the image to docker account
+$ docker push <username>/repo1:firsttry
+Note: firsttry is tag name created above.
+• Check it in hub.docker.com now in tags tab
+ Part 2 : Build and image and then push and run in the docker0
+ Step 6 :
+• In https://labs.play-with-docker.com/ give the following command
+cat > Dockerfile <<EOF
+FROM busybox
+CMD echo "Hello world! This is my first Docker image."
+EOF
+• To build the image from docker file
+$ docker build –t <username>/repo2 .
+• Check images in docker
+$ docker images
+• To push the image on the docker hub
+$ docker push <username>/repo2.
+• Check it in hub.docker.com now in tags tab
+• Come back to the https://labs.play-with-docker.com/ and give the below command to
+run the docker image
+$ docker run <username>/repo2
+• Close the session
+
+
+			Practical No 6
+Aim : Working with Circle CI for continuous integration
+Steps and its output :
+Step 1 : Create a repository
+1. Log in to GitHub and begin the process to create a new repository.
+2. Enter a name for your repository (for example, hello-world).
+3. Select the option to initialize the repository with a README file.
+4. Finally, click Create repository.
+5. There is no need to add any source code for now.
+Step 2 : Set up CircleCI
+• Login to Circle CI https://app.circleci.com/ using GitHub Login
+• Navigate to the CircleCI Projects page. If you created your new repository under an
+organization, you will need to select the organization name.
+• You will be taken to the Projects dashboard. On the dashboard, select the project you
+want to set up (hello-world).
+• Select the option to commit a starter CI pipeline to a new branch, and click Set Up Project.
+This will create a file .circleci/config.yml at the root of your repository on a new branch
+called circleci-project-setup.
+Step 3 : Your first pipeline
+• On your project’s pipeline page, click the green Success button, which brings you to the
+workflow that ran (say-helloworkflow).
+• Within this workflow, the pipeline ran one job, called say-hello. Click say-hello to see the
+steps in this job:
+o Spin up environment
+o Preparing environment variables
+o Checkout code
+o Say hello
+• Now select the “say-hello-workflow”
+• Select “say-hello” Job with a green tick
+• Select Branch and option circleci-project-setup
+Step 4 : Break your build
+• In this section, you will edit the .circleci/config.yml file and see what happens if a build
+does not complete successfully.
+• It is possible to edit files directly on GitHub.
+
+The GitHub file editor should look like this
+Scroll down and Commit your changes on GitHub
+• After committing your changes, then return to the Projects page in CircleCI. You should
+see a new pipeline running… and it will fail! The Node orb runs some common Node tasks.
+Because you are working with an empty repository, running npm run test, a Node script,
+causes the configuration to fail. To fix this, you need to set up a Node project in your
+repository.
+Step 5 : Use Workflows
+You do not have to use orbs to use CircleCI. The following example details how to create a custom
+configuration that also uses the workflow feature of CircleCI.
+• Take a moment and read the comments in the code block below. Then, to see workflows
+in action, edit your .circleci/config.yml file and copy and paste the following text into it.
+You don’t need to write the comments which are the text after #
+• Commit these changes to your repository and navigate back to the CircleCI Pipelines page.
+You should see your pipeline running.
+• Click on the running pipeline to view the workflow you have created. You should see that
+two jobs ran (or are currently running!) concurrently.
+Step 6 : Add some changes to use workspaces
+• Each workflow has an associated workspace which can be used to transfer files to
+downstream jobs as the workflow progresses. You can use workspaces to pass along data
+that is unique to this run and which is needed for downstream jobs. Try updating
+config.yml to the following:
+• Updated config.yml in GitHub file editor should be updated like this
+• Finally your workflow with the jobs running should look like this
+
+			Practical 7
+Aim : Working with TeamService
+Source Code :
+Step 1 :
+• Open command prompt and create a web api 
+
+D:\>dotnet new webapi -o TeamService
+
+• Remove existing weatherforecast files both model and controller files.
+Step 2 :
+• Add new files as follows:
+• Add Member.cs to “D:\TeamService\Models” folder
+using System;
+namespace TeamService.Models
+{
+public class Member
+{
+public Guid ID { get; set; }
+public string FirstName { get; set; }
+public string LastName { get; set; }
+public Member() { }
+public Member(Guid id) : this()
+{
+this.ID = id;
+}
+public Member(string firstName, string lastName, Guid id) : this(id)
+{
+this.FirstName = firstName;
+this.LastName = lastName;
+}
+public override string ToString()
+{
+return this.LastName;
+}
+}
+}
+• Add Team.cs to “D:\TeamService\Models” folder
+using System;
+using System.Collections.Generic;
+namespace TeamService.Models
+{
+public class Team
+{
+public string Name { get; set; }
+public Guid ID { get; set; }
+public ICollection<Member> Members { get; set; }public Team()
+{
+this.Members = new List<Member>();
+}
+public Team(string name) : this()
+{
+this.Name = name;
+}
+public Team(string name, Guid id) : this(name)
+{
+this.ID = id;
+}
+public override string ToString()
+{
+return this.Name;
+}
+}
+}
+• add TeamsController.cs file to “D:\TeamService\Controllers” folder
+using System;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using TeamService.Models;
+using System.Threading.Tasks;
+using TeamService.Persistence;
+namespace TeamService
+{
+[Route("[controller]")]
+public class TeamsController : Controller
+{
+ITeamRepository repository;
+public TeamsController(ITeamRepository repo)
+{
+repository = repo;
+}
+[HttpGet]
+public virtual IActionResult GetAllTeams()
+{
+return this.Ok(repository.List());
+}
+[HttpGet("{id}")]
+public IActionResult GetTeam(Guid id)
+{
+Team team = repository.Get(id);
+if (team != null)
+{
+return this.Ok(team);
+}else
+{
+return this.NotFound();
+}
+}
+[HttpPost]
+public virtual IActionResult CreateTeam([FromBody]Team newTeam)
+{
+repository.Add(newTeam);
+return this.Created($"/teams/{newTeam.ID}", newTeam);
+}
+[HttpPut("{id}")]
+public virtual IActionResult UpdateTeam([FromBody]Team team,
+Guid id)
+{
+team.ID = id;
+if(repository.Update(team) == null)
+{
+return this.NotFound();
+}
+else
+{
+return this.Ok(team);
+}
+}
+[HttpDelete("{id}")]
+public virtual IActionResult DeleteTeam(Guid id)
+{
+Team team = repository.Delete(id);
+if (team == null)
+{
+return this.NotFound();
+}
+else
+{
+return this.Ok(team.ID);
+}
+}
+}
+}
+• Add MembersController.cs file to “D:\TeamService\Controllers” folder
+using System;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using TeamService.Models;
+using System.Threading.Tasks;
+using TeamService.Persistence;namespace TeamService
+{
+[Route("/teams/{teamId}/[controller]")]
+public class MembersController : Controller
+{
+ITeamRepository repository;
+public MembersController(ITeamRepository repo)
+{
+repository = repo;
+}
+[HttpGet]
+public virtual IActionResult GetMembers(Guid teamID)
+{
+Team team = repository.Get(teamID);
+if(team == null)
+{
+return this.NotFound();
+}
+else
+{
+return this.Ok(team.Members);
+}
+}
+[HttpGet]
+[Route("/teams/{teamId}/[controller]/{memberId}")]
+public virtual IActionResult GetMember(Guid teamID, Guid
+memberId)
+{
+Team team = repository.Get(teamID);
+if(team == null)
+{
+return this.NotFound();
+}
+else
+{
+var q = team.Members.Where(m => m.ID == memberId);
+if(q.Count() < 1)
+{
+return this.NotFound();
+}
+else
+{
+return this.Ok(q.First());
+}
+}
+}
+[HttpPut]
+[Route("/teams/{teamId}/[controller]/{memberId}")]
+public virtual IActionResult UpdateMember([FromBody]Member
+updatedMember, Guid teamID, Guid memberId)
+{
+Team team = repository.Get(teamID);
+if(team == null)
+{
+return this.NotFound();
+}
+else
+{
+var q = team.Members.Where(m => m.ID == memberId);
+if(q.Count() < 1)
+{
+return this.NotFound();
+}
+else
+{
+team.Members.Remove(q.First());
+team.Members.Add(updatedMember);
+return this.Ok();
+}
+}
+}
+[HttpPost]
+public virtual IActionResult CreateMember([FromBody]Member
+newMember, Guid teamID)
+{
+Team team = repository.Get(teamID);
+if(team == null)
+{
+return this.NotFound();
+}
+else
+{
+team.Members.Add(newMember);
+var teamMember = new {TeamID = team.ID, MemberID =
+newMember.ID};
+return
+this.Created($"/teams/{teamMember.TeamID}/[controller]/{teamMember.
+MemberID}", teamMember);
+}
+}
+[HttpGet]
+[Route("/members/{memberId}/team")]
+public IActionResult GetTeamForMember(Guid memberId)
+{
+var teamId = GetTeamIdForMember(memberId);
+if (teamId != Guid.Empty)
+{
+return this.Ok(new {TeamID = teamId });
+}
+else
+{
+return this.NotFound();
+}
+}
+private Guid GetTeamIdForMember(Guid memberId)
+{
+foreach (var team in repository.List())
+{
+var member = team.Members.FirstOrDefault( m => m.ID ==
+memberId);
+if (member != null)
+{
+return team.ID;
+}
+}
+return Guid.Empty;
+}
+}
+}
+
+Step 3
+• Create folder “D:\TeamService\Persistence”
+• Add file ITeamReposiroty.cs in “D:\TeamService\Persistence” folder
+using System;
+using System.Collections.Generic;
+using TeamService.Models;
+namespace TeamService.Persistence
+{
+public interface ITeamRepository
+{
+IEnumerable<Team> List();
+Team Get(Guid id);
+Team Add(Team team);
+Team Update(Team team);
+Team Delete(Guid id);
+}
+}
+• Add MemoryTeamRepository.cs in “D:\TeamService\Persistence” folder
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using TeamService;
+using TeamService.Models;
+namespace TeamService.Persistence
+{
+public class MemoryTeamRepository : ITeamRepository
+{
+protected static ICollection<Team> teams;
+public MemoryTeamRepository()
+{
+if(teams == null)
+{
+teams = new List<Team>();
+}
+}
+public MemoryTeamRepository(ICollection<Team> teams)
+{
+MemoryTeamRepository.teams = teams;
+}
+public IEnumerable<Team> List()
+{
+return teams;
+}
+public Team Get(Guid id)
+{
+return teams.FirstOrDefault(t => t.ID == id);
+}
+public Team Update(Team t)
+{
+Team team = this.Delete(t.ID);
+if(team != null)
+{
+team = this.Add(t);
+}
+return team;
+}
+public Team Add(Team team)
+{
+teams.Add(team);
+return team;
+}
+public Team Delete(Guid id)
+{
+var q = teams.Where(t => t.ID == id);
+Team team = null;
+if (q.Count() > 0)
+{
+team = q.First();
+teams.Remove(team);
+}
+return team;
+}
+}
+}
+Step 4 :
+• Add following line to Startup.cs in public void
+ConfigureServices(IServiceCollection services) method
+services.AddScoped<ITeamRepository, MemoryTeamRepository>();
+Output:
+• Open two command prompt
+• Command Prompt 1: go inside folder teamservice first
+
+D:\>dotnet run
+
+• On Command Prompt 2:
+To get all teams
+curl --insecure https://localhost:5001/teams
+
+To create new team
+curl --insecure -H “Content-Type:application/json” –X POST –d “{\“id\”:\”e52baa63-
+d511-417e-9e54-7aab04286281\”, \”name\”:\”KC\”}” https://localhost:5001/teams
+
+To create one more new team
+curl --insecure -H “Content-Type:application/json” –X POST –d “{\“id\”:\”e12baa63-
+d511-417e-9e54-7aab04286281\”, \”name\”:\”MSC Part1\”}”
+https://localhost:5001/teams
+
+To get all teams
+curl --insecure https://localhost:5001/teams
+
+To get single team with team-id as parameter
+curl --insecure https://localhost:5001/teams/e52baa63-d511-417e-9e54-7aab04286281
+
+To update team details (change name of first team from “KC” to “KC IT DEPT”)
+curl --insecure -H “Content-Type:application/json” –X PUT –d “{\“id\”:\”e52baa63-d511-
+417e-9e54- 7aab04286281\”, \”name\”:\”KC IT DEPT\”}”
+https://localhost:5001/teams/e52baa63-d511-417e-9e54-7aab04286281
+
+To delete team
+curl --insecure -H “Content-Type:application/json” –X DELETE
+https://localhost:5001/teams/e52baa63-d511-417e-9e54-7aab04286281
+Confirm: with get all teams now it shows only one team (first one is deleted)
+curl –insecure https://localhost:5001/teams
+
+
+
+
+
+
